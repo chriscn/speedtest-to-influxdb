@@ -1,4 +1,5 @@
 import time
+import datetime
 import json
 import subprocess
 import os
@@ -132,15 +133,17 @@ def main():
             data = format_for_influx(speedtest.stdout)
             print("Speedtest Successful:")
             if influxdb_client.write_points(data) == True:
-                print("Data written to DB successfully")
+                print("{} - Data written to DB successfully".format(datetime.datetime.now()))
+                print("{} - Now sleeping for {}".format(datetime.datetime.now(), TEST_INTERVAL))
                 time.sleep(TEST_INTERVAL)
         else:  # Speedtest failed.
-            print("Speedtest Failed:")
+            print("{} - Speedtest Failed:".format(datetime.datetime.now()))
             print(speedtest.stderr)
             print(speedtest.stdout)
+            print("{} - Now sleeping for {}".format(datetime.datetime.now(), TEST_FAIL_INTERVAL))
             time.sleep(TEST_FAIL_INTERVAL)
 
 
 if __name__ == '__main__':
-    print('Speedtest CLI Data Logger to InfluxDB')
+    print('{} - Speedtest CLI Data Logger to InfluxDB'.format(datetime.datetime.now()))
     main()
