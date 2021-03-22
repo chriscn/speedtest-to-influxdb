@@ -2,20 +2,20 @@
 
 This is a Python script that will continuously run the official Speedtest CLI application by Ookla, takes input from environment variables, formats data and writes it to an InfluxDB database.
 
-This script will allow you to measure your internet connections speed and consistency over time. It uses env variables as configuration. It's as easy to use as telling your Docker server a 1 line command and you'll be set. Using Grafana you can start exploring this data easily. 
+This script will allow you to measure your internet connections speed and consistency over time. It uses env variables as configuration. It's as easy to use as telling your Docker server a 1 line command and you'll be set. Using Grafana you can start exploring this data easily.
 
-I built a grafana dashboard for this data that can be found at https://grafana.com/grafana/dashboards/13053
+[breadlysm](https://github.com/breadlysm) built a Grafana dashboard for this data that can be found at (https://grafana.com/grafana/dashboards/13053)[https://grafana.com/grafana/dashboards/13053].
 
 ![Grafana Dashboard](https://grafana.com/api/dashboards/13053/images/8976/image)
 
-There are some added features to allow some additional details that Ookla provides as tags on your data. Some examples are your current ISP, the interface being used, the server who hosted the test. Overtime, you could identify if some serers are performing better than others. 
+There are some added features to allow some additional details that Ookla provides as tags on your data. Some examples are your current ISP, the interface being used, the server who hosted the test. Overtime, you could identify if some serers are performing better than others.
 
 ## Configuring the script
 
 The InfluxDB connection settings are controlled by environment variables.
 
 The variables available are:
-- INFLUX_DB_ADDRESS = 192.168.1.xxx
+- INFLUX_DB_ADDRESS = 192.168.xxx.xxx
 - INFLUX_DB_PORT = 8086
 - INFLUX_DB_USER = user
 - INFLUX_DB_PASSWORD = pass
@@ -25,12 +25,12 @@ The variables available are:
 - SPEEDTEST_FAIL_INTERVAL = 5
 
 ### Variable Notes
-- Intervals are in minutes. *Script will convert it to seconds.*
-- If any variables are not needed, don't declare them. Functions will operate with or without most variables. 
+- Intervals are in seconds.
+- If any variables are not needed, don't declare them. Functions will operate with or without most variables.
 - Tags should be input without quotes. *INFLUX_DB_TAGS = isp, interface, external_ip, server_name, speedtest_url*
-  
+
 ### Tag Options
-The Ookla speedtest app provides a nice set of data beyond the upload and download speed. The list is below. 
+The Ookla speedtest app provides a nice set of data beyond the upload and download speed. The list is below.
 
 | Tag Name 	| Description 	|
 |-	|-	|
@@ -55,7 +55,23 @@ Be aware that this script will automatically accept the license and GDPR stateme
 
 ## Running the Script
 
-### Ideal option, run as a Docker container. 
+### DockerHub
+The main improvement I have made is hosting this docker container at [DockerHub](https://hub.docker.com/repository/docker/chriscn/speedtest-to-influxdb); allowing you to just run the container without needing to build it.
+
+1. Run the container.
+    ```
+    docker run -d --name speedtest-influx \
+    -e 'INFLUX_DB_ADDRESS'='_influxdb_host_' \
+    -e 'INFLUX_DB_PORT'='8086' \
+    -e 'INFLUX_DB_USER'='_influx_user_' \
+    -e 'INFLUX_DB_PASSWORD'='_influx_pass_' \
+    -e 'INFLUX_DB_DATABASE'='speedtest' \
+    -e 'SPEEDTEST_INTERVAL'='1800' \
+    -e 'SPEEDTEST_FAIL_INTERVAL'='60'  \
+    chriscn/speedtest-to-influxdb
+    ```
+
+### Ideal option, run as a Docker container.
 
 1. Build the container.
 
@@ -75,11 +91,11 @@ Be aware that this script will automatically accept the license and GDPR stateme
     ```
 ### No Container
 
-1. Clone the repo 
+1. Clone the repo
 
     `git clone https://github.com/breadlysm/speedtest-to-influxdb.git`   
 
-2. Configure the .env file in the repo or set the environment variables on your device. 
+2. Configure the .env file in the repo or set the environment variables on your device.
 
 3. [Install the Speedtest CLI application by Ookla.](https://www.speedtest.net/apps/cli)
 
