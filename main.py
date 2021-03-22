@@ -15,9 +15,9 @@ DB_TAGS = os.environ.get('INFLUX_DB_TAGS')
 
 # Speedtest Settings
 # Time between tests (in minutes, converts to seconds).
-TEST_INTERVAL = int(os.environ.get('SPEEDTEST_INTERVAL')) * 60
+TEST_INTERVAL = int(os.environ.get('SPEEDTEST_INTERVAL'))
 # Time before retrying a failed Speedtest (in minutes, converts to seconds).
-TEST_FAIL_INTERVAL = int(os.environ.get('SPEEDTEST_FAIL_INTERVAL')) * 60
+TEST_FAIL_INTERVAL = int(os.environ.get('SPEEDTEST_FAIL_INTERVAL'))
 
 influxdb_client = InfluxDBClient(
     DB_ADDRESS, DB_PORT, DB_USER, DB_PASSWORD, None)
@@ -63,7 +63,7 @@ def tag_selection(data):
         'speedtest_id': data['result']['id'],
         'speedtest_url': data['result']['url']
     }
-    
+
     options = {}
     tags = tags.split(',')
     for tag in tags:
@@ -134,13 +134,13 @@ def main():
             print("Speedtest Successful:")
             if influxdb_client.write_points(data) == True:
                 print("{} - Data written to DB successfully".format(datetime.datetime.now()))
-                print("{} - Now sleeping for {}".format(datetime.datetime.now(), TEST_INTERVAL))
+                print("{} - Now sleeping for {}s".format(datetime.datetime.now(), TEST_INTERVAL))
                 time.sleep(TEST_INTERVAL)
         else:  # Speedtest failed.
             print("{} - Speedtest Failed:".format(datetime.datetime.now()))
             print(speedtest.stderr)
             print(speedtest.stdout)
-            print("{} - Now sleeping for {}".format(datetime.datetime.now(), TEST_FAIL_INTERVAL))
+            print("{} - Now sleeping for {}s".format(datetime.datetime.now(), TEST_FAIL_INTERVAL))
             time.sleep(TEST_FAIL_INTERVAL)
 
 
