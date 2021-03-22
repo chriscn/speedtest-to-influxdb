@@ -55,7 +55,7 @@ Be aware that this script will automatically accept the license and GDPR stateme
 
 ## Running the Script
 
-### DockerHub
+### Ideal option, run from DockerHub
 The main improvement I have made is hosting this docker container at [DockerHub](https://hub.docker.com/repository/docker/chriscn/speedtest-to-influxdb); allowing you to just run the container without needing to build it.
 
 1. Run the container.
@@ -71,7 +71,7 @@ The main improvement I have made is hosting this docker container at [DockerHub]
     chriscn/speedtest-to-influxdb
     ```
 
-### Ideal option, run as a Docker container.
+### Build your own Docker container.
 
 1. Build the container.
 
