@@ -27,11 +27,12 @@ def init_db():
     databases = influxdb_client.get_list_database()
 
     if len(list(filter(lambda x: x['name'] == DB_DATABASE, databases))) == 0:
-        influxdb_client.create_database(
-            DB_DATABASE)  # Create if does not exist.
+        influxdb_client.create_database(DB_DATABASE)  # Create if does not exist.
+        print('{} - Created database {}'.format(datetime.datetime.now(), DB_DATABASE))
     else:
         # Switch to if does exist.
         influxdb_client.switch_database(DB_DATABASE)
+        print('{} - Switched to database {}'.format(datetime.datetime.now(), DB_DATABASE))
 
 
 def pkt_loss(data):
