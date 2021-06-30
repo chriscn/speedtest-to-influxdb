@@ -1,5 +1,5 @@
 # Speedtest to InfluxDB
-
+**SpeedFlux** - If you look at this fork, called SpeedFlux it now supports Docker containers hence I will be retiring this project.
 This is a Python script that will continuously run the official Speedtest CLI application by Ookla, takes input from environment variables, formats data and writes it to an InfluxDB database.
 
 This script will allow you to measure your internet connections speed and consistency over time. It uses env variables as configuration. It's as easy to use as telling your Docker server a 1 line command and you'll be set. Using Grafana you can start exploring this data easily.
